@@ -105,12 +105,25 @@ namespace CornettosLottery
                     hssfworkbookDown = new HSSFWorkbook(file);
                     file.Close();
                 }
-                HSSFSheet firstSheet = (HSSFSheet)hssfworkbookDown.GetSheetAt(0);
+                System.IO.File.Copy(Constants.HistoryPath, Constants.BakPath, true);
+
+                HSSFSheet newSheet = (HSSFSheet)hssfworkbookDown.CreateSheet(DateTime.Now.ToString());
                 HSSFCellStyle cellstyle = (HSSFCellStyle)hssfworkbookDown.CreateCellStyle();
-                HSSFCell cell = (HSSFCell)firstSheet.GetRow(2).CreateCell(1);
-                cell.CellStyle = cellstyle;
-                cell.CellStyle.Alignment = NPOI.SS.UserModel.HorizontalAlignment.CENTER;
-                cell.SetCellValue("TestWriting");
+
+                int currentCount = 0;
+                foreach (var person in SelectPersons)
+                {
+
+                    IRow row = newSheet.CreateRow(currentCount);
+                    int index = 0;
+                    foreach (var personCell in person)
+                    {
+                        newSheet.GetRow(currentCount).CreateCell(index).SetCellValue(person[index]);
+                        index++;
+                    }
+                    currentCount++;
+                }
+
                 FileStream files = new FileStream(Constants.HistoryPath, FileMode.Create);
                 hssfworkbookDown.Write(files);
                 files.Close();

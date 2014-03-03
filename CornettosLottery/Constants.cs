@@ -9,7 +9,7 @@ namespace CornettosLottery
     {
         public const string FileExt = "xls文件|*.xls";       
         public const string HistoryPath = "WinnerHistory.xls";
-        public const string BakPath = "bak\\WinnerHistory"+DateTime.Now.ToString()+".xls";
+        public string BakPath = "bak\\WinnerHistory"+DateTime.Now.ToString()+".xls";
         public const string KeyName = "User Name";
         public const string Username = "User Name";
         public const string Email = "Email Address";
