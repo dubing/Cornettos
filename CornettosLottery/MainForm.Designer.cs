@@ -67,7 +67,7 @@
             this.CornettosLottery.Size = new System.Drawing.Size(583, 111);
             this.CornettosLottery.TabIndex = 0;
             this.CornettosLottery.TabStop = false;
-            this.CornettosLottery.Text = "CornettosLottery";
+            this.CornettosLottery.Text = "LotterySetting";
             // 
             // lblLotteryCount
             // 
@@ -187,7 +187,7 @@
             this.txtSelectPersons.Multiline = true;
             this.txtSelectPersons.Name = "txtSelectPersons";
             this.txtSelectPersons.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtSelectPersons.Size = new System.Drawing.Size(571, 267);
+            this.txtSelectPersons.Size = new System.Drawing.Size(571, 245);
             this.txtSelectPersons.TabIndex = 0;
             // 
             // label3
@@ -216,8 +216,9 @@
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.txtLog);
             this.Controls.Add(this.CornettosLottery);
+            this.MaximizeBox = false;
             this.Name = "MainForm";
-            this.Text = "Form1";
+            this.Text = "Cornettos";
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.CornettosLottery.ResumeLayout(false);
             this.CornettosLottery.PerformLayout();
