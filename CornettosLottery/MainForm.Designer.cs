@@ -42,12 +42,16 @@
             this.txtLog = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.txtSelectPersons = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.lblRemain = new System.Windows.Forms.Label();
             this.CornettosLottery.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // CornettosLottery
             // 
+            this.CornettosLottery.Controls.Add(this.lblRemain);
+            this.CornettosLottery.Controls.Add(this.label3);
             this.CornettosLottery.Controls.Add(this.lblLotteryCount);
             this.CornettosLottery.Controls.Add(this.txtLotteryCount);
             this.CornettosLottery.Controls.Add(this.btnConfirm);
@@ -60,7 +64,7 @@
             this.CornettosLottery.Controls.Add(this.btnSelectFile);
             this.CornettosLottery.Location = new System.Drawing.Point(12, 12);
             this.CornettosLottery.Name = "CornettosLottery";
-            this.CornettosLottery.Size = new System.Drawing.Size(583, 91);
+            this.CornettosLottery.Size = new System.Drawing.Size(583, 111);
             this.CornettosLottery.TabIndex = 0;
             this.CornettosLottery.TabStop = false;
             this.CornettosLottery.Text = "CornettosLottery";
@@ -80,7 +84,7 @@
             this.txtLotteryCount.Name = "txtLotteryCount";
             this.txtLotteryCount.Size = new System.Drawing.Size(62, 20);
             this.txtLotteryCount.TabIndex = 9;
-            this.txtLotteryCount.Text = "1";
+            this.txtLotteryCount.Text = "5";
             // 
             // btnConfirm
             // 
@@ -170,9 +174,9 @@
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.txtSelectPersons);
-            this.groupBox1.Location = new System.Drawing.Point(12, 121);
+            this.groupBox1.Location = new System.Drawing.Point(12, 143);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(583, 292);
+            this.groupBox1.Size = new System.Drawing.Size(583, 270);
             this.groupBox1.TabIndex = 15;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "RandomPersons";
@@ -185,6 +189,24 @@
             this.txtSelectPersons.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.txtSelectPersons.Size = new System.Drawing.Size(571, 267);
             this.txtSelectPersons.TabIndex = 0;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(6, 83);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(130, 13);
+            this.label3.TabIndex = 11;
+            this.label3.Text = "Remove duplicate ramain:";
+            // 
+            // lblRemain
+            // 
+            this.lblRemain.AutoSize = true;
+            this.lblRemain.Location = new System.Drawing.Point(142, 83);
+            this.lblRemain.Name = "lblRemain";
+            this.lblRemain.Size = new System.Drawing.Size(13, 13);
+            this.lblRemain.TabIndex = 12;
+            this.lblRemain.Text = "0";
             // 
             // MainForm
             // 
@@ -222,6 +244,8 @@
         private System.Windows.Forms.TextBox txtSelectPersons;
         private System.Windows.Forms.Label lblLotteryCount;
         private System.Windows.Forms.TextBox txtLotteryCount;
+        private System.Windows.Forms.Label lblRemain;
+        private System.Windows.Forms.Label label3;
     }
 }
 

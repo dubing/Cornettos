@@ -28,11 +28,12 @@ namespace CornettosLottery
         private static RowNoHeader ExcelHeader;
 
         private string BakPath = "bak\\WinnerHistory" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".xls";
+        private string WinnerPath = "Winner\\Winner" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".xls";
 
         private void MainForm_Load(object sender, EventArgs e)
         {
             WinnerHistory = GetMultipleRows(Constants.HistoryPath);
-            if (WinnerHistory == null)
+            if (WinnerHistory == null || WinnerHistory.Count == 0)
             {
                 this.txtLog.Text = CustomMessage.HistoryNotExist;
             }
@@ -56,6 +57,7 @@ namespace CornettosLottery
             if (WinnerInfo != null && WinnerInfo.Count != 0)
             {
                 this.lblPageSize.Text = WinnerInfo.Count.ToString();
+                this.lblRemain.Text = WinnerInfo.Distinct(new MyComparer()).Count().ToString();
                 this.lblWon.Text = WinnerInfo.Count(x => WinnerHistory.Select(y => y[Constants.KeyName].Value).ToList()
                                                          .Contains(x[Constants.KeyName].Value)
                                                     ).ToString();
@@ -79,7 +81,7 @@ namespace CornettosLottery
                 this.txtLog.Text = CustomMessage.SetCountError;
                 return;
             }
-            SelectPersons = WinnerInfo.Where(x => !WinnerHistory.Select(y => y[Constants.KeyName].Value).ToList()
+            SelectPersons = WinnerInfo.Distinct(new MyComparer()).Where(x => !WinnerHistory.Select(y => y[Constants.KeyName].Value).ToList()
                                                        .Contains(x[Constants.KeyName].Value))
                                                   .OrderBy(x => Guid.NewGuid())
                                                   .Take(size)
@@ -89,7 +91,7 @@ namespace CornettosLottery
             foreach (var person in SelectPersons)
             {
                 s.AppendFormat("name:{0},email:{1},mobile:2{2}\r\n" + line + line + "\r\n",
-                    person[Constants.Username].Value.PropertyFormatValue(20),
+                    person[Constants.Username].Value.PropertyFormatValue(30),
                     person[Constants.Email].Value.PropertyFormatValue(35),
                     person[Constants.Mobile].Value);
             }
@@ -102,25 +104,47 @@ namespace CornettosLottery
         {
             try
             {
-                HSSFWorkbook hssfworkbookDown;
-                using (FileStream file = new FileStream(Constants.HistoryPath, FileMode.Open, FileAccess.Read))
-                {
-                    hssfworkbookDown = new HSSFWorkbook(file);
-                    file.Close();
-                }
                 string rootPath = System.IO.Directory.GetCurrentDirectory() + "\\";
 
-                System.IO.File.Copy(Path.Combine(rootPath + Constants.HistoryPath), Path.Combine(rootPath + BakPath), true);
+                if (CheckFile(Constants.HistoryPath))
+                {
+                    System.IO.File.Copy(Path.Combine(rootPath + Constants.HistoryPath), Path.Combine(rootPath + BakPath), true);
+                }
 
-                PutDataIntoExcel(hssfworkbookDown, Constants.HistoryPath);
+                PutDataIntoExcel(Constants.HistoryPath);
 
-           
+                PutDataIntoExcel(WinnerPath);
+
+                this.txtLog.Text =string.Format(CustomMessage.ConformSuccess,WinnerPath);
+
             }
             catch (Exception ex)
             {
                 this.txtLog.Text = ex.Message;
             }
 
+        }
+
+        private bool CheckFile(string filePath)
+        {
+            if (!File.Exists(filePath))
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public class MyComparer : IEqualityComparer<Row>
+        {
+            public bool Equals(Row x, Row y)
+            {
+                return x[Constants.KeyName].Value.ToString().Trim() == y[Constants.KeyName].Value.ToString().Trim();
+            }
+
+            public int GetHashCode(Row obj)
+            {
+                return obj.ToString().GetHashCode();
+            }
         }
 
         private List<Row> GetWinnerFormExcel(string filePath)
@@ -135,23 +159,25 @@ namespace CornettosLottery
 
         private List<Row> GetMultipleRows(string filePath)
         {
-            var excelFile = GetExcelQuery(filePath);
             var winnerRows = new List<Row>();
-            var sheetsCount = excelFile.GetWorksheetNames().Count();
-            for (int i = 0; i < sheetsCount; i++)
+            if (CheckFile(filePath))
             {
-                var userSheet = excelFile.Worksheet(i);
-                var rows = from p in userSheet
-                           select p;
-                foreach (var row in rows)
+                var excelFile = GetExcelQuery(filePath);
+                
+                var sheetsCount = excelFile.GetWorksheetNames().Count();
+                for (int i = 0; i < sheetsCount; i++)
                 {
-                    winnerRows.Add(row);
+                    var userSheet = excelFile.Worksheet(i);
+                    var rows = from p in userSheet
+                               select p;
+                    foreach (var row in rows)
+                    {
+                        winnerRows.Add(row);
+                    }
                 }
             }
             return winnerRows;
         }
-
-
 
         private RowNoHeader GetExcelHeader(string filePath)
         {
@@ -178,8 +204,25 @@ namespace CornettosLottery
 
         }
 
-        private void PutDataIntoExcel(HSSFWorkbook hssfworkbookDown,string filePath)
+        private void PutDataIntoExcel(string filePath)
         {
+            bool fileExist = CheckFile(filePath);
+
+            HSSFWorkbook hssfworkbookDown;
+
+            if (fileExist)
+            {
+                using (FileStream file = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+                {
+                    hssfworkbookDown = new HSSFWorkbook(file);
+                    file.Close();
+                }
+            }
+            else
+            {
+                hssfworkbookDown = new HSSFWorkbook();
+            }
+
             HSSFSheet newSheet = (HSSFSheet)hssfworkbookDown.CreateSheet(DateTime.Now.ToString("yyyyMMddHHmmss"));
             int currentCount = 0;
             if (ExcelHeader != null)

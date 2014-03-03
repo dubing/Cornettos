@@ -1,6 +1,5 @@
 F:\Source Code\Cornettos\CornettosLottery\bin\Debug\CornettosLottery.exe
 F:\Source Code\Cornettos\CornettosLottery\bin\Debug\CornettosLottery.pdb
-F:\Source Code\Cornettos\CornettosLottery\obj\Debug\CornettosLottery.csprojResolveAssemblyReference.cache
 F:\Source Code\Cornettos\CornettosLottery\obj\Debug\CornettosLottery.Properties.Resources.resources
 F:\Source Code\Cornettos\CornettosLottery\obj\Debug\CornettosLottery.csproj.GenerateResource.Cache
 F:\Source Code\Cornettos\CornettosLottery\obj\Debug\CornettosLottery.exe
