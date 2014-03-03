@@ -33,6 +33,8 @@ namespace CornettosLottery
         private void MainForm_Load(object sender, EventArgs e)
         {
             WinnerHistory = GetMultipleRows(Constants.HistoryPath);
+            CheckDirectory(BakPath);
+            CheckDirectory(WinnerPath);
             if (WinnerHistory == null || WinnerHistory.Count == 0)
             {
                 this.txtLog.Text = CustomMessage.HistoryNotExist;
@@ -132,6 +134,14 @@ namespace CornettosLottery
                 return false;
             }
             return true;
+        }
+
+        private void CheckDirectory(string directoryPath)
+        {
+            if (!Directory.Exists(directoryPath))
+            {
+                Directory.CreateDirectory(directoryPath);
+            }
         }
 
         public class MyComparer : IEqualityComparer<Row>
