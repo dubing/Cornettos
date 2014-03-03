@@ -26,6 +26,8 @@ namespace CornettosLottery
         private static List<Row> WinnerInfo;
         private static List<Row> SelectPersons;
 
+        private string BakPath = "bak\\WinnerHistory" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".xls";
+
         private void MainForm_Load(object sender, EventArgs e)
         {
             WinnerHistory = GetWinnerFormExcel(Constants.HistoryPath);
@@ -105,7 +107,8 @@ namespace CornettosLottery
                     hssfworkbookDown = new HSSFWorkbook(file);
                     file.Close();
                 }
-                System.IO.File.Copy(Constants.HistoryPath, Constants.BakPath, true);
+                string rootPath = System.IO.Directory.GetCurrentDirectory()+"\\";
+                System.IO.File.Move(Path.Combine(rootPath + Constants.HistoryPath), Path.Combine(rootPath + BakPath));
 
                 HSSFSheet newSheet = (HSSFSheet)hssfworkbookDown.CreateSheet(DateTime.Now.ToString());
                 HSSFCellStyle cellstyle = (HSSFCellStyle)hssfworkbookDown.CreateCellStyle();
