@@ -29,6 +29,9 @@
         private void InitializeComponent()
         {
             this.CornettosLottery = new System.Windows.Forms.GroupBox();
+            this.lblLotteryCount = new System.Windows.Forms.Label();
+            this.txtLotteryCount = new System.Windows.Forms.TextBox();
+            this.btnConfirm = new System.Windows.Forms.Button();
             this.lblWon = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.btnLottery = new System.Windows.Forms.Button();
@@ -37,11 +40,17 @@
             this.txtAllMember = new System.Windows.Forms.TextBox();
             this.btnSelectFile = new System.Windows.Forms.Button();
             this.txtLog = new System.Windows.Forms.TextBox();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.txtSelectPersons = new System.Windows.Forms.TextBox();
             this.CornettosLottery.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // CornettosLottery
             // 
+            this.CornettosLottery.Controls.Add(this.lblLotteryCount);
+            this.CornettosLottery.Controls.Add(this.txtLotteryCount);
+            this.CornettosLottery.Controls.Add(this.btnConfirm);
             this.CornettosLottery.Controls.Add(this.lblWon);
             this.CornettosLottery.Controls.Add(this.label2);
             this.CornettosLottery.Controls.Add(this.btnLottery);
@@ -55,6 +64,33 @@
             this.CornettosLottery.TabIndex = 0;
             this.CornettosLottery.TabStop = false;
             this.CornettosLottery.Text = "CornettosLottery";
+            // 
+            // lblLotteryCount
+            // 
+            this.lblLotteryCount.AutoSize = true;
+            this.lblLotteryCount.Location = new System.Drawing.Point(259, 59);
+            this.lblLotteryCount.Name = "lblLotteryCount";
+            this.lblLotteryCount.Size = new System.Drawing.Size(67, 13);
+            this.lblLotteryCount.TabIndex = 10;
+            this.lblLotteryCount.Text = "LotteryCount";
+            // 
+            // txtLotteryCount
+            // 
+            this.txtLotteryCount.Location = new System.Drawing.Point(332, 56);
+            this.txtLotteryCount.Name = "txtLotteryCount";
+            this.txtLotteryCount.Size = new System.Drawing.Size(62, 20);
+            this.txtLotteryCount.TabIndex = 9;
+            this.txtLotteryCount.Text = "1";
+            // 
+            // btnConfirm
+            // 
+            this.btnConfirm.Location = new System.Drawing.Point(502, 54);
+            this.btnConfirm.Name = "btnConfirm";
+            this.btnConfirm.Size = new System.Drawing.Size(75, 23);
+            this.btnConfirm.TabIndex = 8;
+            this.btnConfirm.Text = "Confirm";
+            this.btnConfirm.UseVisualStyleBackColor = true;
+            this.btnConfirm.Click += new System.EventHandler(this.btnConfirm_Click);
             // 
             // lblWon
             // 
@@ -76,7 +112,7 @@
             // 
             // btnLottery
             // 
-            this.btnLottery.Location = new System.Drawing.Point(502, 54);
+            this.btnLottery.Location = new System.Drawing.Point(421, 54);
             this.btnLottery.Name = "btnLottery";
             this.btnLottery.Size = new System.Drawing.Size(75, 23);
             this.btnLottery.TabIndex = 5;
@@ -131,11 +167,31 @@
             this.txtLog.Size = new System.Drawing.Size(607, 112);
             this.txtLog.TabIndex = 14;
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.txtSelectPersons);
+            this.groupBox1.Location = new System.Drawing.Point(12, 121);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(583, 292);
+            this.groupBox1.TabIndex = 15;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "RandomPersons";
+            // 
+            // txtSelectPersons
+            // 
+            this.txtSelectPersons.Location = new System.Drawing.Point(6, 19);
+            this.txtSelectPersons.Multiline = true;
+            this.txtSelectPersons.Name = "txtSelectPersons";
+            this.txtSelectPersons.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.txtSelectPersons.Size = new System.Drawing.Size(571, 267);
+            this.txtSelectPersons.TabIndex = 0;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(607, 540);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.txtLog);
             this.Controls.Add(this.CornettosLottery);
             this.Name = "MainForm";
@@ -143,6 +199,8 @@
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.CornettosLottery.ResumeLayout(false);
             this.CornettosLottery.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -159,6 +217,11 @@
         private System.Windows.Forms.TextBox txtLog;
         private System.Windows.Forms.Label lblWon;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button btnConfirm;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.TextBox txtSelectPersons;
+        private System.Windows.Forms.Label lblLotteryCount;
+        private System.Windows.Forms.TextBox txtLotteryCount;
     }
 }
 
