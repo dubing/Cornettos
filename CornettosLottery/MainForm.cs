@@ -25,12 +25,13 @@ namespace CornettosLottery
         private static List<Row> WinnerHistory;
         private static List<Row> WinnerInfo;
         private static List<Row> SelectPersons;
+        private static RowNoHeader ExcelHeader;
 
         private string BakPath = "bak\\WinnerHistory" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".xls";
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            WinnerHistory = GetWinnerFormExcel(Constants.HistoryPath);
+            WinnerHistory = GetMultipleRows(Constants.HistoryPath);
             if (WinnerHistory == null)
             {
                 this.txtLog.Text = CustomMessage.HistoryNotExist;
@@ -51,7 +52,7 @@ namespace CornettosLottery
                 this.txtAllMember.Text = dialog.FileName;
             }
             WinnerInfo = GetWinnerFormExcel(this.txtAllMember.Text);
-
+            ExcelHeader = GetExcelHeader(this.txtAllMember.Text);
             if (WinnerInfo != null && WinnerInfo.Count != 0)
             {
                 this.lblPageSize.Text = WinnerInfo.Count.ToString();
@@ -107,29 +108,13 @@ namespace CornettosLottery
                     hssfworkbookDown = new HSSFWorkbook(file);
                     file.Close();
                 }
-                string rootPath = System.IO.Directory.GetCurrentDirectory()+"\\";
-                System.IO.File.Move(Path.Combine(rootPath + Constants.HistoryPath), Path.Combine(rootPath + BakPath));
+                string rootPath = System.IO.Directory.GetCurrentDirectory() + "\\";
 
-                HSSFSheet newSheet = (HSSFSheet)hssfworkbookDown.CreateSheet(DateTime.Now.ToString());
-                HSSFCellStyle cellstyle = (HSSFCellStyle)hssfworkbookDown.CreateCellStyle();
+                System.IO.File.Copy(Path.Combine(rootPath + Constants.HistoryPath), Path.Combine(rootPath + BakPath), true);
 
-                int currentCount = 0;
-                foreach (var person in SelectPersons)
-                {
+                PutDataIntoExcel(hssfworkbookDown, Constants.HistoryPath);
 
-                    IRow row = newSheet.CreateRow(currentCount);
-                    int index = 0;
-                    foreach (var personCell in person)
-                    {
-                        newSheet.GetRow(currentCount).CreateCell(index).SetCellValue(person[index]);
-                        index++;
-                    }
-                    currentCount++;
-                }
-
-                FileStream files = new FileStream(Constants.HistoryPath, FileMode.Create);
-                hssfworkbookDown.Write(files);
-                files.Close();
+           
             }
             catch (Exception ex)
             {
@@ -140,12 +125,91 @@ namespace CornettosLottery
 
         private List<Row> GetWinnerFormExcel(string filePath)
         {
-            var excelFile = new ExcelQueryFactory(filePath);
+            var excelFile = GetExcelQuery(filePath);
             var userSheet = excelFile.Worksheet(0);
             var query = from p in userSheet
                         select p;
             return query.ToList();
 
+        }
+
+        private List<Row> GetMultipleRows(string filePath)
+        {
+            var excelFile = GetExcelQuery(filePath);
+            var winnerRows = new List<Row>();
+            var sheetsCount = excelFile.GetWorksheetNames().Count();
+            for (int i = 0; i < sheetsCount; i++)
+            {
+                var userSheet = excelFile.Worksheet(i);
+                var rows = from p in userSheet
+                           select p;
+                foreach (var row in rows)
+                {
+                    winnerRows.Add(row);
+                }
+            }
+            return winnerRows;
+        }
+
+
+
+        private RowNoHeader GetExcelHeader(string filePath)
+        {
+            var excelFile = GetExcelQuery(filePath);
+            var rows = from c in excelFile.WorksheetNoHeader(0)
+                       select c;
+            return rows.FirstOrDefault();
+        }
+
+        private ExcelQueryFactory GetExcelQuery(string filePath)
+        {
+            return new ExcelQueryFactory(filePath);
+        }
+
+        private void PutHeaderIntoSheet(HSSFSheet newSheet)
+        {
+            IRow row = newSheet.CreateRow(0);
+            int index = 0;
+            foreach (var coloumName in ExcelHeader)
+            {
+                newSheet.GetRow(0).CreateCell(index).SetCellValue(coloumName);
+                index++;
+            }
+
+        }
+
+        private void PutDataIntoExcel(HSSFWorkbook hssfworkbookDown,string filePath)
+        {
+            HSSFSheet newSheet = (HSSFSheet)hssfworkbookDown.CreateSheet(DateTime.Now.ToString("yyyyMMddHHmmss"));
+            int currentCount = 0;
+            if (ExcelHeader != null)
+            {
+                IRow row = newSheet.CreateRow(0);
+                int index = 0;
+                foreach (var coloumName in ExcelHeader)
+                {
+                    newSheet.GetRow(0).CreateCell(index).SetCellValue(coloumName);
+                    index++;
+                }
+                currentCount = 1;
+            }
+
+            foreach (var person in SelectPersons)
+            {
+
+                IRow row = newSheet.CreateRow(currentCount);
+                int index = 0;
+                foreach (var personCell in person)
+                {
+                    newSheet.GetRow(currentCount).CreateCell(index).SetCellValue(person[index]);
+                    index++;
+                }
+                currentCount++;
+            }
+
+            FileStream files = new FileStream(filePath, FileMode.Create);
+            hssfworkbookDown.Write(files);
+            files.Close();
         }
 
 
