@@ -27,14 +27,14 @@ namespace CornettosLottery
         private static List<Row> SelectPersons;
         private static RowNoHeader ExcelHeader;
 
-        private string BakPath = "bak\\WinnerHistory" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".xls";
+        private string BakPath = "Bak\\WinnerHistory" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".xls";
         private string WinnerPath = "Winner\\Winner" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".xls";
 
         private void MainForm_Load(object sender, EventArgs e)
         {
             WinnerHistory = GetMultipleRows(Constants.HistoryPath);
-            CheckDirectory(BakPath);
-            CheckDirectory(WinnerPath);
+            CheckDirectory(BakPath.Split('\\')[0]);
+            CheckDirectory(WinnerPath.Split('\\')[0]);
             if (WinnerHistory == null || WinnerHistory.Count == 0)
             {
                 this.txtLog.Text = CustomMessage.HistoryNotExist;
@@ -106,6 +106,11 @@ namespace CornettosLottery
         {
             try
             {
+                if (SelectPersons == null)
+                {
+                    this.txtLog.Text = CustomMessage.LotteryError;
+                    return;
+                }
                 string rootPath = System.IO.Directory.GetCurrentDirectory() + "\\";
 
                 if (CheckFile(Constants.HistoryPath))
@@ -119,12 +124,23 @@ namespace CornettosLottery
 
                 this.txtLog.Text =string.Format(CustomMessage.ConformSuccess,WinnerPath);
 
+                FormRefresh();
+
             }
             catch (Exception ex)
             {
                 this.txtLog.Text = ex.Message;
             }
 
+        }
+
+        private void FormRefresh()
+        {
+            WinnerHistory = GetMultipleRows(Constants.HistoryPath);
+            this.lblWon.Text = WinnerInfo.Count(x => WinnerHistory.Select(y => y[Constants.KeyName].Value).ToList()
+                                                         .Contains(x[Constants.KeyName].Value)
+                                                    ).ToString();
+            SelectPersons = null;
         }
 
         private bool CheckFile(string filePath)

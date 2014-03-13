@@ -23,6 +23,7 @@ namespace CornettosLottery
         public const string HistoryNotExist = "the history file is not exist";
         public const string ActionSuccess = "Action Success";
         public const string SetCountError = "the Count of Lottery set wrong format";
+        public const string LotteryError = "Lottery information has expired,pls lottery again";
         public const string ConformSuccess = "Conform Success,these persons have been record at {0} ";
     }
 }
