@@ -12,8 +12,7 @@ namespace CornettosLottery
         public const string KeyName = "Email Address";
         public const string Username = "User Name";
         public const string Email = "Email Address";
-        public const string Mobile = "Mobile No";
-        
+        public const string Mobile = "Mobile No";        
     }
 
     public class CustomMessage
