@@ -19,6 +19,7 @@ namespace CornettosLottery
 
     public class CustomMessage
     {
+
         public const string FileNotCorrect = "this file is not correct";
         public const string HistoryNotExist = "the history file is not exist";
         public const string ActionSuccess = "Action Success";
